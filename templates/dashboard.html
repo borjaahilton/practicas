@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Veterinaria - Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="dashboard-container">
+        <header class="dashboard-header">
+            <div>
+                <h1 style="font-size: 1.5rem; font-weight: 700;">Panel de Control</h1>
+                <p style="color: var(--text-muted); font-size: 0.875rem;">Bienvenido, {{ user_name }}</p>
+            </div>
+            <div>
+                <a href="{{ url_for('database_view') }}" class="btn logout-btn"
+                    style="margin-right: 1rem; border-color: var(--primary-color); color: var(--primary-color);">Ver
+                    Base de Datos</a>
+                <a href="{{ url_for('logout') }}" class="btn logout-btn">Cerrar Sesión</a>
+            </div>
+        </header>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-title">Perros Disponibles</div>
+                <div class="stat-value">{{ stats.dogs }}</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-title">Ventas del Mes</div>
+                <div class="stat-value">${{ stats.sales }}</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-title">Clientes Registrados</div>
+                <div class="stat-value">{{ stats.clients }}</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-title">Vacunas Registradas</div>
+                <div class="stat-value">{{ stats.vaccines }}</div>
+            </div>
+        </div>
+
+        <div class="recent-activity" style="margin-bottom: 2rem;">
+            <div class="recent-header">
+                <h3>Catálogo Rápido (Perros Disponibles)</h3>
+                <a href="{{ url_for('agregar_perro') }}" class="status-badge status-available"
+                    style="text-decoration: none; background-color: var(--secondary-color); color: white; padding: 0.5rem 1rem; display: inline-block; margin-left: 1rem;">+
+                    Agregar Nuevo Perro</a>
+            </div>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Raza</th>
+                            <th>Precio</th>
+                            <th>Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if dogs %}
+                        {% for dog in dogs %}
+                        <tr>
+                            <td>{{ dog.nombre }}</td>
+                            <td>{{ dog.raza }}</td>
+                            <td>${{ dog.precio }}</td>
+                            <td>
+                                <a href="{{ url_for('procesar_venta_demo', id_perro=dog.id_perro) }}"
+                                    class="status-badge status-available"
+                                    style="text-decoration: none; background-color: var(--primary-color); color: white;">Vender
+                                    Ahora</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                        {% else %}
+                        <tr>
+                            <td colspan="4" style="text-align: center; color: var(--text-muted);">No hay perros
+                                disponibles.</td>
+                        </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="recent-activity">
+            <div class="recent-header">
+                <h3>Ventas Recientes</h3>
+            </div>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID Venta</th>
+                            <th>Cliente</th>
+                            <th>Fecha</th>
+                            <th>Total</th>
+                            <th>Comprobante</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if sales %}
+                        {% for sale in sales %}
+                        <tr>
+                            <td>#{{ sale.id_venta }}</td>
+                            <td>{{ sale.dueno }}</td>
+                            <td>{{ sale.fecha }}</td>
+                            <td>${{ sale.total }}</td>
+                            <td>
+                                {% if sale.estado_pdf == 'COMPLETADO' %}
+                                <a href="{{ url_for('descargar_pdf', filename=sale.archivo_pdf) }}"
+                                    class="status-badge status-available"
+                                    style="text-decoration: none; border: 1px solid currentColor;">Descargar PDF</a>
+                                {% elif sale.estado_pdf == 'GENERANDO' %}
+                                <span style="color: var(--text-muted); font-size: 0.8rem;">Generando...</span>
+                                {% else %}
+                                <span style="color: var(--text-muted); font-size: 0.8rem;">Pendiente</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                        {% else %}
+                        <tr>
+                            <td colspan="4" style="text-align: center; color: var(--text-muted);">No hay ventas
+                                registradas aún.</td>
+                        </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

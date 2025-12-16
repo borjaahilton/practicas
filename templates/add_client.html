@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agregar Nuevo Cliente</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .form-container {
+            max-width: 500px;
+            margin: 2rem auto;
+            background: #2D3748;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #E2E8F0;
+            font-weight: 500;
+        }
+
+        input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #4A5568;
+            border-radius: 5px;
+            background-color: #1A202C;
+            color: white;
+            font-size: 1rem;
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 0.75rem;
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .btn-back {
+            display: block;
+            text-align: center;
+            margin-top: 1rem;
+            color: var(--text-muted);
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="dashboard-container">
+        <header class="dashboard-header" style="justify-content: center;">
+            <h1 style="font-size: 1.8rem; font-weight: 700;">Registrar Nuevo Cliente</h1>
+        </header>
+
+        <div class="form-container">
+            <form action="{{ url_for('agregar_cliente') }}" method="POST">
+
+                <div class="form-group">
+                    <label for="nombre">Nombre Completo</label>
+                    <input type="text" id="nombre" name="nombre" required placeholder="Ej: Maria Lopez">
+                </div>
+
+                <div class="form-group">
+                    <label for="dni">DNI / Identificación</label>
+                    <input type="text" id="dni" name="dni" required placeholder="Ej: 0991234567">
+                </div>
+
+                <div class="form-group">
+                    <label for="telefono">Teléfono</label>
+                    <input type="text" id="telefono" name="telefono" required placeholder="Ej: 0987364521">
+                </div>
+
+                <div class="form-group">
+                    <label for="direccion">Dirección</label>
+                    <input type="text" id="direccion" name="direccion" required placeholder="Ej: Av. Amazonas y Colon">
+                </div>
+
+                <button type="submit" class="btn-submit">Guardar Cliente</button>
+            </form>
+            <a href="{{ url_for('database_view') }}" class="btn-back">Cancelar y volver</a>
+        </div>
+    </div>
+</body>
+
+</html>

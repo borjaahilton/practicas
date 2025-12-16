@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Base de Datos Completas</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .table-section {
+            margin-bottom: 3rem;
+        }
+
+        .table-title {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.5rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="dashboard-container">
+        <header class="dashboard-header">
+            <div>
+                <h1 style="font-size: 1.5rem; font-weight: 700;">Base de Datos</h1>
+                <p style="color: var(--text-muted); font-size: 0.875rem;">Vista cruda de todas las tablas</p>
+            </div>
+            <div>
+                <a href="{{ url_for('dashboard') }}" class="btn logout-btn" style="margin-right: 1rem;">Volver al
+                    Dashboard</a>
+                <a href="{{ url_for('logout') }}" class="btn logout-btn">Cerrar Sesión</a>
+            </div>
+        </header>
+
+        {% for name, rows in tables.items() %}
+        <div class="table-section">
+            <div
+                style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem; margin-bottom: 1rem;">
+                <h2 class="table-title" style="border: none; margin: 0;">Tabla: {{ name }}</h2>
+                {% if name == 'Dueno' %}
+                <a href="{{ url_for('agregar_cliente') }}" class="btn"
+                    style="width: auto; padding: 0.5rem 1rem; font-size: 0.9rem;">+ Agregar Nuevo Cliente</a>
+                {% endif %}
+            </div>
+            <div class="recent-activity">
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                {% if rows %}
+                                {% for key in rows[0].keys() %}
+                                <th>{{ key }}</th>
+                                {% endfor %}
+                                {% else %}
+                                <th>Info</th>
+                                {% endif %}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% if rows %}
+                            {% for row in rows %}
+                            <tr>
+                                {% for value in row.values() %}
+                                <td>{{ value }}</td>
+                                {% endfor %}
+                            </tr>
+                            {% endfor %}
+                            {% else %}
+                            <tr>
+                                <td style="text-align: center; color: var(--text-muted);">Tabla vacía</td>
+                            </tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+
+    </div>
+</body>
+
+</html>

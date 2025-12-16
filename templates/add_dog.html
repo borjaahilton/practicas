@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agregar Nuevo Perro</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .form-container {
+            max-width: 500px;
+            margin: 2rem auto;
+            background: #2D3748;
+            /* Darker bg like dashboard cards */
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #E2E8F0;
+            font-weight: 500;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #4A5568;
+            border-radius: 5px;
+            background-color: #1A202C;
+            color: white;
+            font-size: 1rem;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 0.75rem;
+            background-color: var(--secondary-color);
+            /* Green/Teal */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .btn-submit:hover {
+            opacity: 0.9;
+        }
+
+        .btn-back {
+            display: block;
+            text-align: center;
+            margin-top: 1rem;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="dashboard-container">
+        <header class="dashboard-header" style="justify-content: center;">
+            <h1 style="font-size: 1.8rem; font-weight: 700;">Registrar Nuevo Ejemplar</h1>
+        </header>
+
+        <div class="form-container">
+            <form action="{{ url_for('agregar_perro') }}" method="POST" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="nombre">Nombre</label>
+                    <input type="text" id="nombre" name="nombre" required placeholder="Ej: Fido">
+                </div>
+
+                <div class="form-group">
+                    <label for="raza">Raza</label>
+                    <input type="text" id="raza" name="raza" required placeholder="Ej: Labrador">
+                </div>
+
+                <div class="form-group">
+                    <label for="imagen">Foto del Perro (Opcional)</label>
+                    <input type="file" id="imagen" name="imagen" accept="image/*">
+                </div>
+
+                <div class="form-group">
+                    <label for="edad">Edad (Años)</label>
+                    <input type="number" id="edad" name="edad" required min="0">
+                </div>
+
+                <div class="form-group">
+                    <label for="pelaje">Pelaje / Color</label>
+                    <input type="text" id="pelaje" name="pelaje" required placeholder="Ej: Negro corto">
+                </div>
+
+                <div class="form-group">
+                    <label for="tratamiento">Tratamiento / Vacunas</label>
+                    <input type="text" id="tratamiento" name="tratamiento" placeholder="Ej: Quintuple al día">
+                </div>
+
+                <div class="form-group"
+                    style="background: rgba(16, 185, 129, 0.1); padding: 1rem; border-radius: 5px; border: 1px solid rgba(16, 185, 129, 0.3);">
+                    <label for="id_cliente_venta" style="color: #34d399;">Vender Inmediatamente a (Opcional):</label>
+                    <select id="id_cliente_venta" name="id_cliente_venta">
+                        <option value="">-- Solo Registrar en Inventario --</option>
+                        {% for client in clients %}
+                        <option value="{{ client.id_dueno }}">{{ client.nombre }}</option>
+                        {% endfor %}
+                    </select>
+                    <small style="display:block; margin-top:0.5rem; color: #94a3b8; font-size: 0.8rem;">
+                        Si seleccionas un cliente, se creará la venta y la factura automáticamente.
+                    </small>
+                </div>
+
+                <div class="form-group">
+                    <label for="precio">Precio ($)</label>
+                    <input type="number" id="precio" name="precio" required step="0.01" min="0">
+                </div>
+
+                <button type="submit" class="btn-submit">Guardar Perro</button>
+            </form>
+            <a href="{{ url_for('dashboard') }}" class="btn-back">Cancelar y volver</a>
+        </div>
+    </div>
+</body>
+
+</html>
